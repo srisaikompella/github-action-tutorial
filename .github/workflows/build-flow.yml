@@ -12,6 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run a one-line script
-        if: ${GITHUB_REF} == 'main'
+        if: github.ref == 'refs/heads/main'
         run: echo "I am only run on master"
 

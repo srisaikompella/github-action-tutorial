@@ -1,0 +1,121 @@
+Github actions:
+
+Fully integrated with github
+Respond to any github event (say push, pull req etc)
+It has great community support. Backed by community-powered workflows
+Works on any platform (linux, windows, macOs)
+Supports Matrix builds(write job once and then having the same ops and tasks executed n times based on the params you pass to matrix. )
+Built in secret store.
+
+- git actions is comprised by 3 main parts. 1) events 2) workflows 3) actions
+
+- You have a repo in github and workflows are associated with it.This is the first thing we setup as a part of automation proces with github actions. The workflow includes one or more jobs.
+  Jobs then contain one or more steps that will be executed in the order they're specified. You assign so called events or triggers to the wokflows because you don't want them to be exec all the time.
+
+- event initiate or trigger an execution of workflow. defines when an workflow can be triggered.
+- workflow is basically the structure or orchestration of all the tasks and ops that your workflow does. Here you specify the actions which are nothing but the individual tasks/ops that you use to achieve whatever your goal is.
+
+- You can define on which event the workflow can be triggered using the On clause.
+
+  3 types of events: 1) github triggered 2) scheduled 3) manually triggered -> workflow_dispatch
+  Below is the example of scheduled event.
+  on:
+  schedule: 
+  - cron: 0 12 * * 1 
+
+- Workflows are like pipelines. It uses yaml syntax. All yaml files must be present in .github/workflows. It glues together existing actions in seq. 
+  Always the events have to put first in the workflow.
+
+- Jobs run in parallel by default but they can be configured to run seq so that the dependant job waits until the completion of job that it depends on.
+  We can use conditions to avoid them running all the time.
+
+Example of matrix builds:
+
+# The below example implements matrix build. The below job runs 9 times. 
+# 3 times for macos-latest -> macos-latest -> 8.x
+#                             macos-latest -> 10.x
+#                             macos-latest -> 12 .x
+# 3 times for windows and 3 times for ubuntu
+
+name: Node CI
+on:                            # events
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on:  ${{ matrix.os }} # A pipeline can have mutliple jobs, for each job must have runs-on. Github engine needs to know where to run your job.
+    strategy: 
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+        os: [macos-latest, windows-latest, ubuntu-18.04]
+    steps:
+    - name: Use node.js ${{ matrix.node-version }}   # pre-existing actions that someone built
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}  # shell scripts
+    - name: Test Job
+      run: |
+        echo "Hi"
+
+Example-2: First workflow
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-20.04
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo $GITHUB_WORKSPACE
+          ls ./
+          echo Add other actions to build,
+          echo test, and deploy your project.
+      - name: Archive artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          # Name of the artifact to upload.
+          # Optional. Default is 'artifact'
+          name: test artifacts
+
+          # A file, directory or wildcard pattern that describes what to upload
+          # Required.
+          path: k8s-manifests
+  deploy: 
+    runs-on: ubuntu-20.04
+    needs: build
+    steps:
+      - name: Unarchive
+        uses: actions/download-artifact@v4
+        with: 
+          name: test artifacts
+          path: kashi
+      - name: Check artifact status
+        run: pwd && ls -l ./ && cd ../ && ls -l && echo $HOME && cd ../ && ls -l ./

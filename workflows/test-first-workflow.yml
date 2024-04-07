@@ -11,14 +11,16 @@ on:
     branches: [ "main" ]
 
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch: null
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  KASHI_USERNAME: hind
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -26,33 +28,35 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo Hello, world!
+        run: echo ${{ github.env.KASHI_USERNAME }}
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
+        id: multi
         run: |
           echo $GITHUB_WORKSPACE
           ls ./
-          echo Add other actions to build,
-          echo test, and deploy your project.
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          # Name of the artifact to upload.
-          # Optional. Default is 'artifact'
-          name: test artifacts
-
-          # A file, directory or wildcard pattern that describes what to upload
-          # Required.
-          path: k8s-manifests
-  deploy: 
-    runs-on: ubuntu-20.04
-    needs: build
-    steps:
-      - name: Unarchive
-        uses: actions/download-artifact@v4
-        with: 
-          name: test artifacts
-          path: kashi
-      - name: Check artifact status
-        run: ls ./
+          echo "app_pass=${{ github.secrets.KASHI_PASSWORD }}" > "$GITHUB_OUTPUT"
+      - name: Process Output
+        run: echo ${{ steps.multi.outputs.app_pass }}
+          #      - name: Archive artifacts
+          #        uses: actions/upload-artifact@v4
+          #        with:
+          #          # Name of the artifact to upload.
+          #          # Optional. Default is 'artifact'
+          #          name: test artifacts
+          #
+          #          # A file, directory or wildcard pattern that describes what to upload
+          #          # Required.
+          #          path: k8s-manifests
+          #            #  deploy: 
+            #    runs-on: ubuntu-20.04
+            #    needs: build
+            #    steps:
+            #      - name: Unarchive
+            #        uses: actions/download-artifact@v4
+            #        with: 
+            #          name: test artifacts
+            #          path: kashi
+            #      - name: Check artifact status
+            #        run: ls ./

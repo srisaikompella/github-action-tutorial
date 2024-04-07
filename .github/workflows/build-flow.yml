@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: dev test
+      - name: dev tests
         run: echo "dev"
       - name: Run a one-line script
         if: github.ref == 'refs/heads/main'

@@ -38,7 +38,12 @@ jobs:
           ls ./
           echo "app_pass=${{ secrets.KASHI_PASSWORD }}" > "$GITHUB_OUTPUT"
       - name: Process Output
-        run: echo ${{ steps.multi.outputs.app_pass }}
+        run: mkdir pass && echo ${{ steps.multi.outputs.app_pass }} > pass/mypass.txt
+      - name: Archive pass
+        uses: actions/upload-artifact@v4
+        with:
+          name: secrets
+          path: pass
           #      - name: Archive artifacts
           #        uses: actions/upload-artifact@v4
           #        with:

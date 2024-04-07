@@ -23,6 +23,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        with:
+          repository: "kasisubbarayudu/maa"
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -35,24 +37,3 @@ jobs:
           ls ./
           echo Add other actions to build,
           echo test, and deploy your project.
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          # Name of the artifact to upload.
-          # Optional. Default is 'artifact'
-          name: test artifacts
-
-          # A file, directory or wildcard pattern that describes what to upload
-          # Required.
-          path: k8s-manifests
-  deploy: 
-    runs-on: ubuntu-20.04
-    needs: build
-    steps:
-      - name: Unarchive
-        uses: actions/download-artifact@v4
-        with: 
-          name: test artifacts
-          path: kashi
-      - name: Check artifact status
-        run: ls ./

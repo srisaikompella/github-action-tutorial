@@ -13,8 +13,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: mine
-        id: mine
-        run: echo "hind_username=maa" > $GITHUB_OUTPUT
-      - name: text
-        run: echo ${{ steps.mine.outputs.hind_username }}
+      - name: dev tests
+        run: exit 1
+      - name: Run a one-line script
+        if: failure() 
+        run: echo "success..."
+

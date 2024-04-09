@@ -15,6 +15,12 @@ jobs:
     steps:
       - name: mine
         id: mine
-        run: echo "hind_username=maa" > $GITHUB_OUTPUT
+        run: echoz "hind_username=maa" > $GITHUB_OUTPUT
       - name: text
+        if: failure()
         run: echo ${{ steps.mine.outputs.hind_username }}
+      - name: Rest
+        run: sleep 20
+      - name: cancell flow
+        if: cancelled()
+        run: echo "Workflow cancelled post steps..."

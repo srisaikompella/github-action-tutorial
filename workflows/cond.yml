@@ -1,7 +1,9 @@
 name: CI
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
 
   workflow_dispatch: null
 
@@ -11,7 +13,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: dev tests
+        run: echo ${{ github.ref }}
       - name: Run a one-line script
-        if: ${GITHUB_HEAD_REF} == 'main'
+        if: startsWith(github.ref, 'refs/pull')
         run: echo "I am only run on master"
 

@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: dev tests
-        run: echo ${{ github.ref }}
+        run: exit 1
       - name: Run a one-line script
-        if: startsWith(github.ref, 'refs/pull')
-        run: echo "I am only run on master"
+        if: success()
+        run: echo "success..."
 

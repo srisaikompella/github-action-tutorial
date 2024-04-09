@@ -16,6 +16,6 @@ jobs:
       - name: dev tests
         run: echo ${{ github.ref }}
       - name: Run a one-line script
-        if: startsWith(github.ref, 'refs/pull')
+        if: startsWith(github.ref, 'refs/pull') # if: github.ref == 'refs/heads/main' && 'refs/pull/1/merge where 1 is pr no && refs/tags/<name> && https://docs.github.com/en/actions/learn-github-actions/contexts#github-context
         run: echo "I am only run on master"
 

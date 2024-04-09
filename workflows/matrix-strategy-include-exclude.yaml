@@ -1,0 +1,41 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        platform: ["ubuntu-latest", "ubuntu-20.04"]
+        number: ["22", "24"]   #This is the above number list ... [ 22, 24, 26] we could have added it like this. but see below.
+        # This is a reserved key. This allows you to add a list of key values that should be included 
+        # without adding a bunch of new combinations. For ex. we could add here the number 26 and platform is ubuntu-latest/
+        # ofcourse we could have added 26 directly in the above number list.but that would've added 2 new combinations.
+        # ubuntu-latest 22. 24. 26 and ubuntu-20.04 22. 24.26 where ubuntu-latest 26 and ubuntu-20.04 26 are the new combs. 
+        # what we need is just ubuntu-latest 26 combination and we don't need ubuntu-20.04 26.
+        # To summarise, this allows you to add standalone combinations.we are also allowed to add brand new keys whih wewren;t specified above.
+        # ex: 
+        # include:
+        # - platform: ["ubuntu-latest"]
+        #   number: ["26"]
+        #   test: ["hind"]
+        include:
+          - platform: ["ubuntu-latest"]
+            number: ["26"]
+        # similarly we have exclude key to exlcude some combos. the below example excludes ubuntu-latest 22
+        exclude:
+          - platform: ubuntu-latest
+            number: 22
+    name: Build Job
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - name: mine
+        id: mine
+        continue-on-error: true
+        run: |
+          echo "Job id - ${{ github.job_id }} - ${{ matrix.number }}"

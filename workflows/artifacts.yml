@@ -1,0 +1,36 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  workflow_dispatch: null
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run a multi-line script
+        id: multi
+        run: |
+          echo $GITHUB_WORKSPACE
+          ls ./
+        echo "app_pass=${{ secrets.KASHI_PASSWORD }}" > "$GITHUB_OUTPUT" # This echo statement writes the output to GITHUB_OUTPUT env variable and this sets a steps context . you can retrieve the output of a step using the steps context and id as follows:
+# ${{ steps.<id>.outputs.<KEY> }} => ${{ steps.multi.outputs.app_pass }}
+      - name: Process Output
+        run: mkdir pass && echo ${{ steps.multi.outputs.app_pass }} > pass/mypass.txt
+      - name: Archive pass
+        uses: actions/upload-artifact@v4
+        with:
+          name: secrets
+          path: pass # Uploads the pass directory to githb server.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+     - name: Unarchive
+       uses: actions/download-artifact@v4
+       with: 
+         name: secrets #The name should match with what we have defined
+         path: my-custom-path
+     - name: Check artifact status
+       run: ls ./

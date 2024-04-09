@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+env:
+  KASHI_USERNAME: Hind
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: mine
+        id: mine
+        run: echoz "hind_username=maa" > $GITHUB_OUTPUT # echoz returns status code 1
+      - name: text
+        if: failure() # now failure fn returns true because the mine step failed.
+        run: echo ${{ steps.mine.outputs.hind_username }}
+      - name: Rest
+        if: failure() # here also we have put failure fn because github actions default behaviour is to skip all the jobs after a failure. Hence we need to use failure fn here as well for the step rest to be executed. if you remove failure fn even though the text step executed successfully since the mine step failed github is going to skip the rest step. You need to think of text step as a spc case. because it has the failure fn enabled.
+        run: sleep 20
+      - name: cancell flow
+        if: cancelled()
+        run: echo "Workflow cancelled post steps..."
+
+
+-------------
+Another example:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: install deps
+        run: npm ci
+      - name: test code
+        id: tests
+        run: npm run test
+      - name: upload report
+        if: failure() && steps.tests.outcome == 'failure'
+        run: echo "upload report"
+# in the above example, the upload step is going to run in case "test" step fails and then failure fn returns true and outcome is set to failure string. 
+# But let's say for some reason 'deps' failed. Then test code step is going to be skipped. but still in 'upload' step the failure fn returms true but outcome is null becase the 'test' stage is skipped and hence the var is unset.

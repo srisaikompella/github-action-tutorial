@@ -24,7 +24,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          repository: "kasisubbarayudu/maa"
+          repository: "kasisubbarayudu/maa" # Optionally you can also specify the other repository name to clone.
 
       # Runs a single command using the runners shell
       - name: Run a one-line script

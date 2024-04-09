@@ -1,0 +1,17 @@
+name: Kashi CI
+
+on: workflow_call
+# The workflow_call event is used to indicate that a workflow can be called by another workflow. 
+# When a workflow is triggered with the workflow_call event, 
+# the event payload in the called workflow is the same event payload from the calling workflow.
+
+jobs:
+    Devops:
+        name: Devops Job
+        runs-on: ubuntu-latest
+        steps:
+            - name: RUN TEST
+              run: echo "Test ... ${{ github.job }}"
+            - name: OUTPUT INFO
+              run: echo "o/p -> test"
+          

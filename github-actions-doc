@@ -119,3 +119,7 @@ jobs:
           path: kashi
       - name: Check artifact status
         run: pwd && ls -l ./ && cd ../ && ls -l && echo $HOME && cd ../ && ls -l ./
+
+GITHUB_WORKSPACE -> prints the github workspace .. (path where our workflow is running ....)
+
+  

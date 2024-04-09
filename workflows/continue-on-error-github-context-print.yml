@@ -1,0 +1,27 @@
+# continue-on-error is used to continue exdcution of rest of steps even though a step on which this param is set is failed. It is same as if: failure() but here you have to set on it on one step and rest of steps will be eecuted in case of failure. but in case of if you have to manually set the if func on the steps you want to be executed in case of failure.
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+env:
+  KASHI_USERNAME: Hind
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: mine
+        id: mine
+        continue-on-error: true
+        run: echoz "hind_username=maa" > $GITHUB_OUTPUT
+      - name: outcome
+        run: echo ${{ steps.mine.outcome }} # This will print failure because this step evaluates the result of the previous step before continue-on-error is excuted. 
+      - name: conclustion
+        run: echo ${{ steps.mine.conclusion }}  # This will print success because this step evaluates the result of the previous step after continue-on-error is excuted.
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}' # print the json file of the github context.

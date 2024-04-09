@@ -16,6 +16,6 @@ jobs:
       - name: dev tests
         run: exit 1
       - name: Run a one-line script
-        if: success()
+        if: failure() 
         run: echo "success..."
 

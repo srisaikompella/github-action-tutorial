@@ -20,6 +20,7 @@ jobs:
         if: failure()
         run: echo ${{ steps.mine.outputs.hind_username }}
       - name: Rest
+        if: failure()
         run: sleep 20
       - name: cancell flow
         if: cancelled()

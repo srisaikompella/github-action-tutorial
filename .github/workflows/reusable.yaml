@@ -2,17 +2,18 @@ name: Kashi CI
 
 on:
   workflow_call:
-    inputs:
-      test1:
-        description: test arg
-        required: true
-        type: string
+    # inputs:
+    #   test1:
+    #     description: test arg
+    #     required: true
+    #     type: string
     # secrets:
     #   test-secret:
     #     required: true
     outputs:
-      tera: 
-        value: ${{ jobs.devops.outputs.app_secret }}
+      result: 
+        value: ${{ jobs.devops.outputs.custom }}
+        description: the value
 
 
 jobs:
@@ -20,17 +21,8 @@ jobs:
         name: Devops Job
         runs-on: ubuntu-latest
         outputs:
-          app_secret: ${{ steps.print.outputs.app_secret }}
+          custom: ${{ steps.print.outputs.app }}
         steps:
-            - name: RUN TEST
-              run: |
-                mkdir secret-text
-                echo ${{ secrets.KASHI_PASSWORD }} > secret-text/mysecret.txt
             - name: print out
               id: print
-              run: echo "app_secret=${{ secrets.KASHI_PASSWORD }}" > $GITHUB_OUTPUT
-            - name: archive OUTPUT
-              uses: actions/upload-artifact@v4
-              with:
-                path: secret-text
-                name: ${{ inputs.test1 }}
+              run: echo "app=Hind" > $GITHUB_OUTPUT

@@ -8,25 +8,14 @@ on:
   workflow_dispatch: null
 
 jobs:
-  build:
-    name: Build Job
-    runs-on: ubuntu-latest
-    steps:
-      - name: Tests
-        id: naina
-        run: echo "mera=Tests...apr" >> $GITHUB_OUTPUT  
   deploy:
     name: Deploy JOB
     uses: ./.github/workflows/reusable.yaml # Donot need to specify the "runs-on" param here when we are
-    with:
-      test1: "Amma"
-    # secrets: 
-    #   test-secret: ${{ secrets.KASHI_PASSWORD }}
+
   print:
-    name: printer
     needs: deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Print info
-        run: echo ${{ needs.deploy.outputs.tera }}
+      - name: primt
+        run: echo "${{ needs.deploy.outputs.result }}"
     # using the reusable workflows because the runner is already defined in the targeted workflow.

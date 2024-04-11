@@ -1,0 +1,39 @@
+name: CI
+on: 
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+jobs:
+  break:
+    name: Test containersiation
+    runs-on: ubuntu-latest
+    # container:
+    #   image: nginx
+    services: # This is simliar to the docker compose services concept.
+    # The main nginx container which is executing all the steps in a job will be able to 
+    # communicate with the service maa container because github runner attaches both of them to the same netwok.
+    # But let's suppose you have removed the container definition above and decided to run the steps on 
+    # runner itself even then you will be able to communicate with service maa provided if you have enabled 
+    # port-forwarding.
+      maa:
+        image: nginx
+        ports:
+          - 80:80
+    steps:
+      - name: Test env
+        run: |
+          pwd
+          echo "---------------------"
+          cat /etc/os-release
+          echo "---------------------"
+          cd /etc/nginx
+          ls
+          cat /etc/resolv.conf
+          echo "USerma,e : $HOME"
+      # ping -c 3 maa
+          CONT_NAME=$(docker ps --format '{{.Names}}')
+          docker exec  $CONT_NAME ls /etc/nginx

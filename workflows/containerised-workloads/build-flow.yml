@@ -1,0 +1,27 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+jobs:
+  break:
+    name: Test containersiation
+    runs-on: ubuntu-latest
+    container:
+      image: nginx # Here we specify the container image at the job level
+      # All the steps in a job will be executed  inside this container. This way we can have more control over the env.
+    steps:
+      - name: Test env
+        run: |
+          pwd
+          echo "---------------------"
+          cat /etc/os-release
+          echo "---------------------"
+          cd /etc/nginx
+          ls
+          cat /etc/resolv.conf
+          echo "USerma,e : $HOME"

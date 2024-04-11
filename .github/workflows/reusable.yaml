@@ -21,7 +21,7 @@ jobs:
                 mkdir secret-text
                 echo ${{ secrets.test-secret }} > secret-text/mysecret.txt
             - name: archive OUTPUT
-              uses: archive/upload-artifact@v4
+              uses: actions/upload-artifact@v4
               with:
                 path: secret-text
                 name: ${{ inputs.test1 }}

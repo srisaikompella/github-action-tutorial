@@ -7,11 +7,13 @@ on:
         description: test arg
         required: true
         type: string
-    outputs:
-      tera: ${{ jobs.devops.outputs.app_secret }}
     secrets:
       test-secret:
         required: true
+    outputs:
+      tera: 
+        value: ${{ jobs.devops.outputs.app_secret }}
+
 
 jobs:
     devops:
@@ -27,8 +29,8 @@ jobs:
             - name: print out
               id: print
               run: echo "app_secret=${{ secrets.test-secret }}" > $GITHUB_OUTPUT
-            - name: archive OUTPUT
-              uses: actions/upload-artifact@v4
-              with:
-                path: secret-text
-                name: ${{ inputs.test1 }}
+            # - name: archive OUTPUT
+            #   uses: actions/upload-artifact@v4
+            #   with:
+            #     path: secret-text
+            #     name: ${{ inputs.test1 }}

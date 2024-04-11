@@ -121,5 +121,9 @@ jobs:
         run: pwd && ls -l ./ && cd ../ && ls -l && echo $HOME && cd ../ && ls -l ./
 
 GITHUB_WORKSPACE -> prints the github workspace .. (path where our workflow is running ....)
-
-  
+toJSON(github)
+toJSON(env)
+3 types of custom actions:
+1) docker 
+2) composite 
+3) JavaScript

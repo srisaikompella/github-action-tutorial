@@ -23,4 +23,6 @@ jobs:
     steps:
       - name: print
         run: echo '${{ toJson(env) }}'
+        env:
+          app: kashi
     # using the reusable workflows because the runner is already defined in the targeted workflow.

@@ -29,8 +29,8 @@ jobs:
             - name: print out
               id: print
               run: echo "app_secret=${{ secrets.KASHI_PASSWORD }}" > $GITHUB_OUTPUT
-            # - name: archive OUTPUT
-            #   uses: actions/upload-artifact@v4
-            #   with:
-            #     path: secret-text
-            #     name: ${{ inputs.test1 }}
+            - name: archive OUTPUT
+              uses: actions/upload-artifact@v4
+              with:
+                path: secret-text
+                name: ${{ inputs.test1 }}

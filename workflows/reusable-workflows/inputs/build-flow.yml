@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+jobs:
+  build:
+    name: Build Job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Tests
+        run: echo "Tests..."
+  deploy:
+    name: Deploy JOB
+    uses: ./.github/workflows/reusable.yaml # Donot need to specify the "runs-on" param here when we are
+    # using the reusable workflows because the runner is already defined in the targeted workflow.

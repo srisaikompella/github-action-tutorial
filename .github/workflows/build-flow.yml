@@ -29,4 +29,5 @@ jobs:
           ls
           cat /etc/resolv.conf
           echo "USerma,e : $HOME"
-          docker ps
+          CONT_NAME=docker ps --format '{{.Names}}'
+          docker exec -it $CONT_NAME ls /etc/nginx

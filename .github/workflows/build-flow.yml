@@ -11,9 +11,12 @@ jobs:
   build:
     name: Build Job
     runs-on: ubuntu-latest
+    outputs:
+      kashi: ${{ steps.naina.outputs.mera }}
     steps:
       - name: Tests
-        run: echo "Tests..."
+        id: naina
+        run: echo "mera=Tests...apr" >> $GITHUB_OUTPUT  
   deploy:
     name: Deploy JOB
     uses: ./.github/workflows/reusable.yaml # Donot need to specify the "runs-on" param here when we are

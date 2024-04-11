@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: nginx
+    services:
+      maa:
+        image: nginx
     steps:
       - name: Test env
         run: |
@@ -22,4 +25,5 @@ jobs:
           echo "---------------------"
           cd /etc/nginx
           ls
-          ip a
+          cat /etc/resolv.conf
+          ping -c 3 maa

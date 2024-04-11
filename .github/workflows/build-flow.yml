@@ -17,4 +17,6 @@ jobs:
   deploy:
     name: Deploy JOB
     uses: ./.github/workflows/reusable.yaml # Donot need to specify the "runs-on" param here when we are
+    with:
+      test1: "Amma"
     # using the reusable workflows because the runner is already defined in the targeted workflow.

@@ -25,10 +25,10 @@ jobs:
             - name: RUN TEST
               run: |
                 mkdir secret-text
-                echo ${{ secrets.test-secret }} > secret-text/mysecret.txt
+                echo ${{ secrets.KASHI_PASSWORD }} > secret-text/mysecret.txt
             - name: print out
               id: print
-              run: echo "app_secret=${{ secrets.test-secret }}" > $GITHUB_OUTPUT
+              run: echo "app_secret=${{ secrets.KASHI_PASSWORD }}" > $GITHUB_OUTPUT
             # - name: archive OUTPUT
             #   uses: actions/upload-artifact@v4
             #   with:

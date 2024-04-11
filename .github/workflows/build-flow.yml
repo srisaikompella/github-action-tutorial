@@ -28,4 +28,5 @@ jobs:
           cd /etc/nginx
           ls
           cat /etc/resolv.conf
-          docker exec -it maa ls /etc/nginx
+          echo "USerma,e : $HOME"
+          docker ps

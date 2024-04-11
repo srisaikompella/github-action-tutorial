@@ -8,21 +8,18 @@ on:
   workflow_dispatch: null
 
 jobs:
-  deploy:
-    name: Deploy JOB
-    uses: ./.github/workflows/reusable.yaml # Donot need to specify the "runs-on" param here when we are
-
-  print:
-    needs: deploy
+  break:
+    name: Test containersiation
     runs-on: ubuntu-latest
+    container:
+      image: nginx
     steps:
-      - name: primt
-        run: echo "${{ needs.deploy.outputs.result }}"
-  my:
-    runs-on: ubuntu-latest
-    steps:
-      - name: print
-        run: echo '${{ fromJSON('["push", "kashi"]') }}'
-        env:
-          app: kashi
-    # using the reusable workflows because the runner is already defined in the targeted workflow.
+      - name: Test env
+        run: |
+          pwd
+          echo "---------------------"
+          cat /etc/os-release
+          echo "---------------------"
+          cd /etc/nginx
+          ls
+          ip a

@@ -1,0 +1,21 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+jobs:
+  deploy:
+    name: Deploy JOB
+    uses: ./.github/workflows/reusable.yaml # Donot need to specify the "runs-on" param here when we are
+
+  print:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: primt
+        run: echo "${{ needs.deploy.outputs.result }}"
+    # using the reusable workflows because the runner is already defined in the targeted workflow.

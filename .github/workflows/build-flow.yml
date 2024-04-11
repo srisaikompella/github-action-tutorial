@@ -11,11 +11,13 @@ jobs:
   break:
     name: Test containersiation
     runs-on: ubuntu-latest
-    container:
-      image: nginx
+    # container:
+    #   image: nginx
     services:
       maa:
         image: nginx
+        ports:
+          - 80:80
     steps:
       - name: Test env
         run: |
@@ -26,6 +28,4 @@ jobs:
           cd /etc/nginx
           ls
           cat /etc/resolv.conf
-          apt update -y
-          apt install iputils-ping -y
-          ping -c 3 maa
+          curl 127.0.0.1:80

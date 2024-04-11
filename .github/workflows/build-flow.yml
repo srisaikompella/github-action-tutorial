@@ -26,4 +26,6 @@ jobs:
           cd /etc/nginx
           ls
           cat /etc/resolv.conf
+          apt update -y
+          apt install iputils-ping -y
           ping -c 3 maa

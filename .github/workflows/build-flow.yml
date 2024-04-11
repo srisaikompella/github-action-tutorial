@@ -24,4 +24,11 @@ jobs:
       test1: "Amma"
     secrets: 
       test-secret: ${{ secrets.KASHI_PASSWORD }}
+  print:
+    name: printer
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print info
+        run: echo ${{ needs.build.outputs.kashi }}
     # using the reusable workflows because the runner is already defined in the targeted workflow.

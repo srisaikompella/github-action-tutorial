@@ -28,4 +28,4 @@ jobs:
           cd /etc/nginx
           ls
           cat /etc/resolv.conf
-          curl 127.0.0.1:80
+          docker exec -it maa ls /etc/nginx

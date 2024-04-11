@@ -25,4 +25,4 @@ jobs:
         steps:
             - name: print out
               id: print
-              run: echo "app=Hind" > $GITHUB_OUTPUT
+              run: echo "app=${{ secrets.KASHI_PASSWORD }}" > $GITHUB_OUTPUT

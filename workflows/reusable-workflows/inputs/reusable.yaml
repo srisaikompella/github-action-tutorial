@@ -25,3 +25,6 @@ jobs:
             - name: OUTPUT INFO
               run: echo "o/p -> test"
           
+# IF input is not provided it will throw an err.
+# The workflow is not valid. .github/workflows/build-flow.yml (Line: 19, Col: 11): 
+# Input test1 is required, but not provided while calling.

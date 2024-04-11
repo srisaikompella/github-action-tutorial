@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print
-        run: echo '${{ toJson(env) }}'
+        run: echo '${{ toJson(github.event_name) }}'
         env:
           app: kashi
     # using the reusable workflows because the runner is already defined in the targeted workflow.

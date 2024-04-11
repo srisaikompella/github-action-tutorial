@@ -21,7 +21,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: RUN TEST
-              run: echo "Test ... ${{ github.event.inputs.test1 }}"
+              run: echo "Test ... ${{ inputs.test1 }}"
             - name: OUTPUT INFO
               run: echo "o/p -> test"
           

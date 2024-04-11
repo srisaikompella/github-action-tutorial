@@ -7,9 +7,10 @@ on:
         description: test arg
         required: true
         type: string
-      secrets:
-        test-secret:
-          required: true
+    secrets:
+      test-secret:
+        required: true
+
 jobs:
     Devops:
         name: Devops Job

@@ -11,8 +11,6 @@ jobs:
   build:
     name: Build Job
     runs-on: ubuntu-latest
-    outputs:
-      kashi: ${{ steps.naina.outputs.mera }}
     steps:
       - name: Tests
         id: naina
@@ -26,9 +24,9 @@ jobs:
       test-secret: ${{ secrets.KASHI_PASSWORD }}
   print:
     name: printer
-    needs: build
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
       - name: Print info
-        run: echo ${{ needs.build.outputs.kashi }}
+        run: echo ${{ needs.deploy.outputs.app_secret }}
     # using the reusable workflows because the runner is already defined in the targeted workflow.

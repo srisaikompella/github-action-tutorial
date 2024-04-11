@@ -1,0 +1,26 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+jobs:
+  build:
+    name: Build Job
+    runs-on: ubuntu-latest
+    outputs: # Generate the outputs at the job level
+      kashi: ${{ steps.naina.outputs.mera }}
+    steps:
+      - name: Tests
+        id: naina
+        run: echo "mera=Tests...apr" >> $GITHUB_OUTPUT  
+  print:
+    name: printer
+    needs: build # access the outputs of one job in the dependant job.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print info
+        run: echo ${{ needs.build.outputs.kashi }}

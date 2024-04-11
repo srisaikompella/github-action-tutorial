@@ -7,19 +7,26 @@ on:
         description: test arg
         required: true
         type: string
+    outputs:
+      tera: ${{ jobs.devops.outputs.app_secret }}
     secrets:
       test-secret:
         required: true
 
 jobs:
-    Devops:
+    devops:
         name: Devops Job
         runs-on: ubuntu-latest
+        outputs:
+          app_secret: ${{ steps.print.outputs.app_secret }}
         steps:
             - name: RUN TEST
               run: |
                 mkdir secret-text
                 echo ${{ secrets.test-secret }} > secret-text/mysecret.txt
+            - name: print out
+              id: print
+              run: echo "app_secret=${{ secrets.test-secret }}" > $GITHUB_OUTPUT
             - name: archive OUTPUT
               uses: actions/upload-artifact@v4
               with:

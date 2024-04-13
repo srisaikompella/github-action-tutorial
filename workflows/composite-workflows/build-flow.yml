@@ -1,0 +1,27 @@
+name: CI
+on:
+  push:
+    branches: [ "main", "dev" ]
+  pull_request:
+    branches: ["main"]
+
+  workflow_dispatch: null
+
+jobs:
+  break:
+    name: Test containersiation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+      - name: Test env
+        run: |
+          pwd
+      - name: composite execution
+        id: comp
+        uses: ./.github/workflows/composite/loops
+        with:
+          number: 20
+      - name: output
+        run: echo ${{ steps.comp.outputs.test }}

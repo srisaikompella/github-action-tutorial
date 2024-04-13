@@ -60,6 +60,10 @@ jobs:
       run: |
         echo "Hi"
 
+Example-1: workflow_dispatch example
+link: [ https://dev.to/mrmike/github-action-handling-input-default-value-5f2g ]
+
+
 Example-2: First workflow
 # This is a basic workflow to help you get started with Actions
 
@@ -123,7 +127,48 @@ jobs:
 GITHUB_WORKSPACE -> prints the github workspace .. (path where our workflow is running ....)
 toJSON(github)
 toJSON(env)
-3 types of custom actions:
-1) docker 
-2) composite 
-3) JavaScript
+
+
+Github Custom Actions:
+----------------------
+
+Why custom actions?
+
+Multiple steps can be grouped into a single custom action.
+Instead of writing complex step definitions, you can build and use a single custom action. (simplify various steps you have in your workflows)
+No existing public workflow action:: existing public actions might not solve the problem you have in your workflow in the way you them to solve. Hence you want to build a custom action because you have more control over how it solves a specific problem. It contains your own logic.
+
+Custom actions are of 3 types:
+1) Docker 2) Javascript 3) Composite
+
+Javascript: logic is written in Javascript. This Javascript file will be executed whenever your actions runs. 
+Docker: Create a dockerfile with your required config. Perform any tasks of your choice with any language.
+Composite: The idea behind this action is you don't write any code with any programming language but instead you combine multiple workflow steps into one single action. combine run and uses actions in single action. 
+We can create a brand new repo for action and if it is a public repo, that could be used by any other workflow in any other repo as an action. your actions could live in their own repos and you can use them straight from there. But you can add actions to projects you already have so that they're then only available in those projects. If you add actions to the existing project then they will be used by only that specific project meaning by workflows that are part of this project not any other workflows. If your intention is to make this action usable by any workflow from other repos, you must create the actions as standalone repos.
+
+NOTE: if your actions resides in the same repository as your workflows, then checkout code must be executed first and cannot be part of the action itself. because we must checkout the project code,  before we can use the action defined.
+
+
+the below link explains the difference between resuable workflows and composite actions.
+1) Nesting: can't chain reusable workflows( cannot call another reusable workflow ). composite actions can be chained. we can have a composite actions with another composite actions as one of its steps.
+2) Conditions: we can use if conditions in reusable case and can't in composite actions.
+3) Secrets: we can consume secrets in resuable case and can't use secrets in composite.
+Above second and 3 rd point are wrong points and misleading ....
+wheerlaw easily explaiend the differences. See the link below...
+
+4) storage: we can store the reusbale in .github/workflows dir, where composite can be stored in brand new repos.
+5) Jobs: composite actions consits of flat list of steps hence you cannot have multiple jobs in single composite action. It doesn;t specify a 'job' keyword. but uses run instead. the story is diff for reusable workflow. you can have many jobs in a single workflow.
+
+6) logging: With Reusable Workflows you have a very rich log of what is happening, and every single job and step is logged independently in real time .This is not the case, however, with Composite Actions. As we have just seen, Composite Actions are a way to group multiple steps in one… this also means that when executing that step you don’t have visibility on all of the parts.
+
+Outdated differences::
+https://dev.to/n3wt0n/composite-actions-vs-reusable-workflows-what-is-the-difference-github-actions-11kd ( Conditionals are supported by custom actions.) read the comment section thoroughly.
+
+wheerlaws repos to understand the secrets case:: 
+https://github.com/wheelerlaw/test-action/blob/6c299b9921cc81afbf57ddb00c78dd0f89a995f7/action.yaml
+https://github.com/wheelerlaw/test-workflow/blob/54f040445facb60e3e403a1f720693f55cf4309a/.github/workflows/CI.yaml#L24
+
+Updated differences::
+https://dev.to/n3wt0n/github-composite-actions-vs-reusable-workflows-updated-2023-bl8
+
+When you are executing a shell command using run module in github action you need to specify type of shell in composite action

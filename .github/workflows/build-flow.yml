@@ -11,23 +11,12 @@ jobs:
   break:
     name: Test containersiation
     runs-on: ubuntu-latest
-    # container:
-    #   image: nginx
-    services:
-      maa:
-        image: nginx
-        ports:
-          - 80:80
+
     steps:
       - name: Test env
         run: |
           pwd
-          echo "---------------------"
-          cat /etc/os-release
-          echo "---------------------"
-          cd /etc/nginx
-          ls
-          cat /etc/resolv.conf
-          echo "USerma,e : $HOME"
-          CONT_NAME=$(docker ps --format '{{.Names}}')
-          docker exec  $CONT_NAME ls /etc/nginx
+      - name: composite execution
+        uses: ./github/workflows/composite/loop
+        with:
+          number: 20

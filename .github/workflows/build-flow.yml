@@ -19,6 +19,6 @@ jobs:
         run: |
           pwd
       - name: composite execution
-        uses: ./.github/workflows/composite/loop
+        uses: ./.github/workflows/composite/loops
         with:
           number: 20

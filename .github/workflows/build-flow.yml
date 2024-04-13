@@ -19,6 +19,9 @@ jobs:
         run: |
           pwd
       - name: composite execution
+        id: comp
         uses: ./.github/workflows/composite/loops
         with:
           number: 20
+      - name: output
+        run: echo ${{ steps.comp.outputs.test }}

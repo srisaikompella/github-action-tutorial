@@ -10,13 +10,13 @@ inputs:
 runs:
   using: composite
 
-steps:
-  - name: print echo 1
-    run: echo "Hello ..step 1"
-    shell: bash
-  - name: print echo 2
-    run: echo "Hello .. step 2"
-    shell: bash
-  - name: loop
-    run: for ((i=1; i<${{ inputs.number }}; i++)); do echo $i; done
-    shell: bash
+  steps:
+    - name: print echo 1
+      run: echo "Hello ..step 1"
+      shell: bash
+    - name: print echo 2
+      run: echo "Hello .. step 2"
+      shell: bash
+    - name: loop
+      run: for ((i=1; i<${{ inputs.number }}; i++)); do echo $i; done
+      shell: bash

@@ -1,3 +1,6 @@
+## 
+
+
 name: CI
 on: 
   push:
@@ -11,14 +14,14 @@ jobs:
   break:
     name: Test containersiation
     runs-on: ubuntu-latest
-    # container:
-    #   image: nginx
-    services: # This is simliar to the docker compose services concept.
+    container:
+      image: nginx
+    services: 
+    # This is simliar to the docker compose services concept.
     # The main nginx container which is executing all the steps in a job will be able to 
-    # communicate with the service maa container because github runner attaches both of them to the same netwok.
-    # But let's suppose you have removed the container definition above and decided to run the steps on 
-    # runner itself even then you will be able to communicate with service maa provided if you have enabled 
-    # port-forwarding.
+    # communicate with the service maa container because github runner attaches both of them to the same netwok. ( then nginx container can talk to maa container using the service name maa as hostname and port 80. curl http://maa:80 )
+    # But let's suppose you have removed the conta iner definition above ( say for example commented out the container definition above.) and then the steps u have below "Test Run" will be run on 
+    # runner itself but inorder to be able to communicate with the maa container u should enable port-forwarding. that port forwarding will forward the traffic from runner to the maa container. so in that case you can access the maa container using localhost:80 instead of maa:80 because in this case the steps are running on runner and not inside any container.
       maa:
         image: nginx
         ports:
@@ -34,11 +37,9 @@ jobs:
           ls
           cat /etc/resolv.conf
           echo "USerma,e : $HOME"
-      # ping -c 3 maa
+          ping -c 3 maa
           CONT_NAME=$(docker ps --format '{{.Names}}')
           docker exec  $CONT_NAME ls /etc/nginx
-
-
 # # continue-on-error is used to continue exdcution of rest of steps even though a step on which this param is set is failed. It is same as if: failure() but here you have to set on it on one step and rest of steps will be eecuted in case of failure. but in case of if you have to manually set the if func on the steps you want to be executed in case of failure.
 # name: CI
 # on:

@@ -37,7 +37,7 @@ jobs:
           # ls
           # cat /etc/resolv.conf
           echo "USerma,e : $HOME"
-          curl http://maa:80
+          # curl http://maa:80
           # CONT_NAME=$(docker ps --format '{{.Names}}')
           echo $CONT_NAME
           docker ps -a

@@ -37,9 +37,9 @@ jobs:
           ls
           cat /etc/resolv.conf
           echo "USerma,e : $HOME"
-          ping -c 3 maa
-          CONT_NAME=$(docker ps --format '{{.Names}}')
-          docker exec  $CONT_NAME ls /etc/nginx
+          curl http://maa:80
+          # CONT_NAME=$(docker ps --format '{{.Names}}')
+          # docker exec  $CONT_NAME ls /etc/nginx
 # # continue-on-error is used to continue exdcution of rest of steps even though a step on which this param is set is failed. It is same as if: failure() but here you have to set on it on one step and rest of steps will be eecuted in case of failure. but in case of if you have to manually set the if func on the steps you want to be executed in case of failure.
 # name: CI
 # on:

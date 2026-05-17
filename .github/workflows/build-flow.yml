@@ -1,3 +1,4 @@
+# continue-on-error is used to continue exdcution of rest of steps even though a step on which this param is set is failed. It is same as if: failure() but here you have to set on it on one step and rest of steps will be eecuted in case of failure. but in case of if you have to manually set the if func on the steps you want to be executed in case of failure.
 name: CI
 on:
   push:
@@ -7,38 +8,67 @@ on:
 
   workflow_dispatch: null
 
+env:
+  KASHI_USERNAME: Hind
 jobs:
   build:
-    strategy:
-      matrix:
-        platform: ["ubuntu-latest", "ubuntu-20.04"]
-        number: ["22", "24"]   #This is the above number list ... [ 22, 24, 26] we could have added it like this. but see below.
-        # This is a reserved key. This allows you to add a list of key values that should be included 
-        # without adding a bunch of new combinations. For ex. we could add here the number 26 and platform is ubuntu-latest/
-        # ofcourse we could have added 26 directly in the above number list.but that would've added 2 new combinations.
-        # ubuntu-latest 22. 24. 26 and ubuntu-20.04 22. 24.26 where ubuntu-latest 26 and ubuntu-20.04 26 are the new combs. 
-        # what we need is just ubuntu-latest 26 combination and we don't need ubuntu-20.04 26.
-        # To summarise, this allows you to add standalone combincombos. theations.we are also allowed to add brand new keys whih wewren;t specified above.
-        # ex: 
-        # include:
-        # - platform: ["ubuntu-latest"]
-        #   number: ["26"]
-        #   test: ["hind"]
-        include:
-          - platform: ["ubuntu-latest"]
-            number: ["26"]
-        # similarly we have exclude key to exlcude some combos. the below example excludes ubuntu-latest 22
-        exclude:
-          - platform: ubuntu-latest
-            number: 22
-    name: Build Job
-    runs-on: ${{ matrix.platform }}
+    runs-on: ubuntu-latest
     steps:
       - name: mine
         id: mine
         continue-on-error: true
-        run: |
-          echo "Job id - ${{ github.job_id }} - ${{ matrix.number }}"
+        run: echoz "hind_username=maa" > $GITHUB_OUTPUT
+      - name: outcome
+        run: echo ${{ steps.mine.outcome }} # This will print failure because this step evaluates the result of the previous step before continue-on-error is excuted. 
+      - name: conclustion
+        run: echo ${{ steps.mine.conclusion }}  # This will print success because this step evaluates the result of the previous step after continue-on-error is excuted.
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}' # print the json file of the github context.
+
+
+
+# name: CI
+# on:
+#   push:
+#     branches: [ "main", "dev" ]
+#   pull_request:
+#     branches: ["main"]
+
+#   workflow_dispatch: null
+
+# jobs:
+#   build:
+#     strategy:
+#       matrix:
+#         platform: ["ubuntu-latest", "ubuntu-20.04"]
+#         number: ["22", "24"]   #This is the above number list ... [ 22, 24, 26] we could have added it like this. but see below.
+#         # This is a reserved key. This allows you to add a list of key values that should be included 
+#         # without adding a bunch of new combinations. For ex. we could add here the number 26 and platform is ubuntu-latest/
+#         # ofcourse we could have added 26 directly in the above number list.but that would've added 2 new combinations.
+#         # ubuntu-latest 22. 24. 26 and ubuntu-20.04 22. 24.26 where ubuntu-latest 26 and ubuntu-20.04 26 are the new combs. 
+#         # what we need is just ubuntu-latest 26 combination and we don't need ubuntu-20.04 26.
+#         # To summarise, this allows you to add standalone combincombos. theations.we are also allowed to add brand new keys whih wewren;t specified above.
+#         # ex: 
+#         # include:
+#         # - platform: ["ubuntu-latest"]
+#         #   number: ["26"]
+#         #   test: ["hind"]
+#         include:
+#           - platform: ["ubuntu-latest"]
+#             number: ["26"]
+#         # similarly we have exclude key to exlcude some combos. the below example excludes ubuntu-latest 22
+#         exclude:
+#           - platform: ubuntu-latest
+#             number: 22
+#     name: Build Job
+#     runs-on: ${{ matrix.platform }}
+#     steps:
+#       - name: mine
+#         id: mine
+#         continue-on-error: true
+#         run: |
+#           echo "Job id - ${{ github.job_id }} - ${{ matrix.number }}"
 
 
 

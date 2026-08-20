@@ -1,0 +1,60 @@
+name: PR Deploy to GKE
+
+# Manually triggered workflow to build and deploy a PR to GKE.
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: pr-deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
+
+jobs:
+  pr-deploy:
+    name: Build & Deploy PR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+
+    steps:
+
+      # ───────────────────────────────────
+      #  Setup & PR Resolution
+      # ───────────────────────────────────
+
+      - name: Checkout branch code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          submodules: false
+
+      - name: Get PR number
+        id: pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER=$(gh pr list \
+            --head "${{ github.ref_name }}" \
+            --json number --jq '.[0].number')
+
+          if [ -z "$PR_NUMBER" ]; then
+            echo "::error::No open PR found for branch '${{ github.ref_name }}'"
+            exit 1
+          fi
+
+          echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
+          echo "PR_TAG=pr-${PR_NUMBER}" >> "$GITHUB_ENV"
+          echo "Resolved PR #$PR_NUMBER for branch ${{ github.ref_name }}"
+
+      # ───────────────────────────────────
+      #  Detect which services changed in PR
+      # ───────────────────────────────────
+
+      - name: Detect changed services
+        id: detect
+        run: |
+          git diff --name-only origin/main...HEAD

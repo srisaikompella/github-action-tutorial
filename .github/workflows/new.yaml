@@ -45,7 +45,7 @@ jobs:
             echo "::error::No open PR found for branch '${{ github.ref_name }}'"
             exit 1
           fi
-          sleep 20
+          sleep 60
  
           echo "number=$PR_NUMBER" >> "$GITHUB_OUTPUT"
           echo "PR_TAG=pr-${PR_NUMBER}" >> "$GITHUB_ENV"
